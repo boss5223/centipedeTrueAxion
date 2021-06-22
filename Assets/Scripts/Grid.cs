@@ -5,11 +5,11 @@ using UnityEngine;
 public class Grid
 {
     private static Grid instance;
-    public int[,] Grids;
+    public float[,] Grids;
     private bool gridCreated;
     Sprite sprite;
 
-    private int Vertical, Horizontal, Columns, Rows;
+    private float Vertical, Horizontal, Columns, Rows;
     private float cellsize = 1;
     private Grid()
     {
@@ -28,19 +28,18 @@ public class Grid
     public void CreateGrid()
     {
         Vertical = (int)Camera.main.orthographicSize;
-        //Vertical = (int)Camera.main.orthographicSize;
         Debug.Log((int)Camera.main.orthographicSize);
-        Horizontal = Vertical * (Screen.width / Screen.height);
+        Horizontal = Mathf.RoundToInt(Vertical * ((float)Screen.width / (float)Screen.height));
+        Debug.Log("size : "+ Screen.width +" "+ Screen.height);
         Debug.Log(Horizontal);
 
-        Columns = Horizontal * 2;
-        Rows = Vertical * 2;
-        Grids = new int[Columns, Rows];
+        Columns = Horizontal * 2f;
+        Rows = Vertical * 2f;
+        Grids = new float[(int)Columns, (int)Rows];
         for (int i = 0; i < Columns; i++)
         {
             for (int j = 0; j < Rows; j++)
             {
-                //Grid[i, j] = Random.Range(0, 10);
                 SpawnTile(i, j);
             }
         }
@@ -76,8 +75,24 @@ public class Grid
         position = new Vector3(x - (Horizontal - 0.5f), y - (Vertical - 0.5f));
     }
 
+    public void GetGridXY(Vector3 position,out int x,out int y)
+    {
+        x = Mathf.RoundToInt(position.x + (Horizontal - 0.5f));
+        y = Mathf.RoundToInt(position.y + (Vertical - 0.5f));
+    }
+
     public int GetCenterX()
     {
-        return Columns / 2;
+        return (int)Columns / 2;
+    }
+
+    public int GetCanWalkVertical()
+    {
+        return Mathf.RoundToInt((Vertical / 100) * 15);
+    }
+
+    public int GetCanWalkHorizontal()
+    {
+        return Mathf.RoundToInt(Horizontal*2-1);
     }
 }

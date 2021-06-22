@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour,Player
+public class PlayerController : MonoBehaviour, Player
 {
     private bool isMoving;
     private Vector3 originPos, targetPos;
@@ -16,28 +16,28 @@ public class PlayerController : MonoBehaviour,Player
         {
             directions += Vector3.up;
             directions += Vector3.right;
-            Debug.Log(directions);
+            //Debug.Log(directions);
             StartCoroutine(Move(directions));
         }
         if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow) && !isMoving)
         {
             directions += Vector3.up;
             directions += Vector3.left;
-            Debug.Log(directions);
+            //Debug.Log(directions);
             StartCoroutine(Move(directions));
         }
         if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow) && !isMoving)
         {
             directions += Vector3.down;
             directions += Vector3.left;
-            Debug.Log(directions);
+            //Debug.Log(directions);
             StartCoroutine(Move(directions));
         }
         if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow) && !isMoving)
         {
             directions += Vector3.down;
             directions += Vector3.right;
-            Debug.Log(directions);
+            //Debug.Log(directions);
             StartCoroutine(Move(directions));
         }
         if (Input.GetKey(KeyCode.UpArrow) && !isMoving)
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour,Player
             directions += Vector3.right;
             StartCoroutine(Move(directions));
         }
-       
+
     }
 
     public IEnumerator Move(Vector3 direction)
@@ -73,6 +73,22 @@ public class PlayerController : MonoBehaviour,Player
         float elapsedtime = 0;
         originPos = transform.position;
         targetPos = originPos + direction;
+        Debug.Log("Target Pos: " + targetPos);
+        //if(targetPos.y > Grid.Instance().GetPlayerCanWalkVertical())
+        //{
+        //    targetPos = new Vector3(targetPos.x, Grid.Instance().GetPlayerCanWalkVertical());
+        //}
+        int x;
+        int y;
+        Grid.Instance().GetGridXY(targetPos, out x, out y);
+        if (y > Grid.Instance().GetCanWalkVertical() || y < 0)
+        {
+            targetPos = new Vector3(targetPos.x, originPos.y);
+        }
+        if(x > Grid.Instance().GetCanWalkHorizontal() || x<0)
+        {
+            targetPos = new Vector3(originPos.x, targetPos.y);
+        }
         while (elapsedtime < timeToMove)
         {
             transform.position = Vector3.Lerp(originPos, targetPos, elapsedtime / timeToMove);
@@ -80,7 +96,7 @@ public class PlayerController : MonoBehaviour,Player
             yield return null;
         }
         transform.position = targetPos;
-       
+
         isMoving = false;
     }
 

@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
         //Create Player;
         Vector3 position = Vector3.zero;
         Grid.Instance().GetPositionGrid(Grid.Instance().GetCenterX(), 0,out position);
+        Debug.Log(Grid.Instance().GetCenterX());
+        Debug.Log(position);
         var player = Instantiate(_player, position, Quaternion.identity);
     }
 }
