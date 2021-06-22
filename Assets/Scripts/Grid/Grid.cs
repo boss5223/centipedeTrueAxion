@@ -7,6 +7,7 @@ public class Grid
     private static Grid instance;
     public float[,] Grids;
     private bool gridCreated;
+    private Transform parent;
     Sprite sprite;
 
     private float Vertical, Horizontal, Columns, Rows;
@@ -48,6 +49,7 @@ public class Grid
     private void SpawnTile(int x, int y)
     {
         GameObject tile = new GameObject("x:" + x + "y:" + y);
+        tile.transform.SetParent(parent);
         tile.transform.position = new Vector3(x - (Horizontal - 0.5f), y - (Vertical - 0.5f));
         //Instantiate(text, tile.transform.position, Quaternion.identity);
         var spriterender = tile.AddComponent<SpriteRenderer>();
@@ -70,6 +72,12 @@ public class Grid
         this.sprite = sprite;
     }
 
+    public void SetParent(Transform parent)
+    {
+        this.parent = parent;
+    }
+    
+
     public void GetPositionGrid(int x,int y,out Vector3 position)
     {
         position = new Vector3(x - (Horizontal - 0.5f), y - (Vertical - 0.5f));
@@ -84,6 +92,16 @@ public class Grid
     public int GetCenterX()
     {
         return (int)Columns / 2;
+    }
+
+
+    public int GetMaxX()
+    {
+        return Mathf.RoundToInt(Columns-1);
+    }
+    public int GetMaxY()
+    {
+        return Mathf.RoundToInt(Rows -1);
     }
 
     public int GetCanWalkVertical()
