@@ -96,7 +96,15 @@ public class CentipedeController : MonoBehaviour,Centipede
             yield return null;
         }
         transform.position = targetPos;
-
+        // Attack Player
+        RaycastHit2D playerHit = Physics2D.Raycast(transform.position, Vector3.zero);
+        if(playerHit.collider != null)
+        {
+            if (playerHit.collider.CompareTag("Player"))
+            {
+                Debug.Log("Attake Player!!!!");
+            }
+        }
         isMoving = false;
     }
 

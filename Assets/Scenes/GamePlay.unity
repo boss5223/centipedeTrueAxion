@@ -286,3 +286,4 @@ MonoBehaviour:
   centipedeParts: 18
   _mushroom: {fileID: 883302781857468044, guid: 11e0235934593d24b8dc1b1c35dad4d7,
     type: 3}
+  amountMushroom: 23

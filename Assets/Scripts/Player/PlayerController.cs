@@ -6,8 +6,9 @@ public class PlayerController : MonoBehaviour, Player
 {
     private bool isMoving;
     private Vector3 originPos, targetPos;
-    private float timeToMove = 0.2f;
+    private float timeToMove = 0.1f;
     private Vector3 directions;
+    private bool mushroomFounded;
     // Update is called once per frame
     void Update()
     {
@@ -69,18 +70,16 @@ public class PlayerController : MonoBehaviour, Player
 
     public IEnumerator Move(Vector3 direction)
     {
+        if (mushroomFounded) yield return null;
         isMoving = true;
         float elapsedtime = 0;
         originPos = transform.position;
         targetPos = originPos + direction;
-        Debug.Log("Target Pos: " + targetPos);
-        //if(targetPos.y > Grid.Instance().GetPlayerCanWalkVertical())
-        //{
-        //    targetPos = new Vector3(targetPos.x, Grid.Instance().GetPlayerCanWalkVertical());
-        //}
+        //Debug.Log("Target Pos: " + targetPos);
         int x;
         int y;
         Grid.Instance().GetGridXY(targetPos, out x, out y);
+
         if (y > Grid.Instance().GetCanWalkVertical() || y < 0)
         {
             targetPos = new Vector3(targetPos.x, originPos.y);
@@ -88,6 +87,14 @@ public class PlayerController : MonoBehaviour, Player
         if(x > Grid.Instance().GetCanWalkHorizontal() || x<0)
         {
             targetPos = new Vector3(originPos.x, targetPos.y);
+        }
+        RaycastHit2D hit = Physics2D.Raycast(targetPos, Vector3.zero);
+        if (hit.collider != null)
+        {
+            if (hit.collider.CompareTag("Mushroom"))
+            {
+                targetPos = originPos;
+            }
         }
         while (elapsedtime < timeToMove)
         {
@@ -99,5 +106,27 @@ public class PlayerController : MonoBehaviour, Player
 
         isMoving = false;
     }
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision != null)
+    //    {
+    //        if (collision.CompareTag("Mushroom"))
+    //        {
+    //            mushroomFounded = true;
+    //            Debug.Log("found!");
+    //        }
+    //    }
+    //}
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision != null)
+    //    {
+    //        if (collision.CompareTag("Mushroom"))
+    //        {
+    //            mushroomFounded = false;
+    //        }
+    //    }
+    //}
 
 }

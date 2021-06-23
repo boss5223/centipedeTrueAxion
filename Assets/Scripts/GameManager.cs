@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Mushroom")]
     public GameObject _mushroom;
+    [Range(15,40)]public int amountMushroom;
 
     private IEnumerator Start()
     {
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
         CreatePlayer();
         yield return new WaitForSeconds(1f);
         CreateCentipede(centipedeParts);
-        CreateMushroom(10);
+        CreateMushroom(amountMushroom);
     }
 
     void CreatePlayer()
