@@ -16,10 +16,12 @@ public class GameManager : MonoBehaviour
     [Header("Monster")]
     public GameObject _centipede;
     [Range(15, 40)] public int centipedeParts;
+    public Transform _centipedeParent;
 
     [Header("Mushroom")]
     public GameObject _mushroom;
     [Range(15,40)]public int amountMushroom;
+    public Transform _mushroomParent;
 
     private IEnumerator Start()
     {
@@ -58,6 +60,7 @@ public class GameManager : MonoBehaviour
                 Vector3 centipedePosition = Vector3.zero;
                 Grid.Instance().GetPositionGrid(i, Grid.Instance().GetMaxY() - 1, out centipedePosition);
                 var centipede = Instantiate(_centipede, centipedePosition, Quaternion.identity);
+                centipede.transform.SetParent(_centipedeParent);
                 centipede.GetComponent<CentipedeController>().SetDirectionCentipede(-1);
                 if (i == remain && !_hasHead)
                 {
@@ -73,6 +76,7 @@ public class GameManager : MonoBehaviour
             Vector3 centipedePosition = Vector3.zero;
             Grid.Instance().GetPositionGrid(i, Grid.Instance().GetMaxY(), out centipedePosition);
             var centipede = Instantiate(_centipede, centipedePosition, Quaternion.identity);
+            centipede.transform.SetParent(_centipedeParent);
             if (i == amountCentipede && !_hasHead)
             {
                 centipede.transform.Find("Head").gameObject.SetActive(true);
@@ -93,6 +97,7 @@ public class GameManager : MonoBehaviour
             if (hit.collider == null)
             {
                 var mushroom = Instantiate(_mushroom, position, Quaternion.identity);
+                mushroom.transform.SetParent(_mushroomParent);
             }
         }
         

@@ -5,6 +5,8 @@ using UnityEngine;
 public class CentipedeController : MonoBehaviour,Centipede
 {
 
+
+
     private bool isMoving;
     private Vector3 originPos, targetPos;
     [Range(0.1f, 9.9f)] public float timeToMove = 0.1f;

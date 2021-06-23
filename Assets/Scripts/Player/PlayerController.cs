@@ -9,6 +9,13 @@ public class PlayerController : MonoBehaviour, Player
     private float timeToMove = 0.1f;
     private Vector3 directions;
     private bool mushroomFounded;
+    private GameObject bullet;
+    private bool isFired;
+
+    void Start()
+    {
+        bullet = Resources.Load<GameObject>("Prefab/Bullet");
+    }
     // Update is called once per frame
     void Update()
     {
@@ -66,6 +73,11 @@ public class PlayerController : MonoBehaviour, Player
             StartCoroutine(Move(directions));
         }
 
+        if (Input.GetKey(KeyCode.Space) && !isFired)
+        {
+            StartCoroutine(Fire());
+        }
+
     }
 
     public IEnumerator Move(Vector3 direction)
@@ -107,26 +119,15 @@ public class PlayerController : MonoBehaviour, Player
         isMoving = false;
     }
 
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision != null)
-    //    {
-    //        if (collision.CompareTag("Mushroom"))
-    //        {
-    //            mushroomFounded = true;
-    //            Debug.Log("found!");
-    //        }
-    //    }
-    //}
-    //private void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    if (collision != null)
-    //    {
-    //        if (collision.CompareTag("Mushroom"))
-    //        {
-    //            mushroomFounded = false;
-    //        }
-    //    }
-    //}
+    public IEnumerator Fire()
+    {
+        if (bullet == null) yield return null;
+        isFired = true;
+        var bullets = Instantiate(bullet, transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(0.5f);
+        isFired = false;
+    }
+
+
 
 }
