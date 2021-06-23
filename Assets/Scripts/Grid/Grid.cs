@@ -83,6 +83,13 @@ public class Grid
         position = new Vector3(x - (Horizontal - 0.5f), y - (Vertical - 0.5f));
     }
 
+    public Vector3 GetRandomPosition()
+    {
+        int x = Random.Range(1, Mathf.RoundToInt(Columns - 1));
+        int y = Random.Range(2, Mathf.RoundToInt(Rows - 1));
+        return new Vector3(x - (Horizontal - 0.5f), y - (Vertical - 0.5f));
+    }
+
     public void GetGridXY(Vector3 position,out int x,out int y)
     {
         x = Mathf.RoundToInt(position.x + (Horizontal - 0.5f));

@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         CreatePlayer();
         yield return new WaitForSeconds(1f);
         CreateCentipede(centipedeParts);
-        CreateMushroom();
+        CreateMushroom(10);
     }
 
     void CreatePlayer()
@@ -82,10 +82,23 @@ public class GameManager : MonoBehaviour
 
     }
 
-    void CreateMushroom()
+    void CreateMushroom(int loop)
     {
-        Vector3 position = Vector3.zero;
-        Grid.Instance().GetPositionGrid(Grid.Instance().GetCenterX(), Grid.Instance().GetMaxY()-2, out position);
-        var player = Instantiate(_mushroom, position, Quaternion.identity);
+        //Loop
+        for (int i = 0; i < loop; i++)
+        {
+            Vector3 position = Grid.Instance().GetRandomPosition();
+            RaycastHit2D hit = Physics2D.Raycast(position, Vector3.zero);
+            if (hit.collider == null)
+            {
+                var mushroom = Instantiate(_mushroom, position, Quaternion.identity);
+            }
+        }
+        
+    }
+
+    void SpawnMushroom(Vector3 position)
+    {
+        var mushroom = Instantiate(_mushroom, position, Quaternion.identity);
     }
 }
