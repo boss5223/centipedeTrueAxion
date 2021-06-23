@@ -97,7 +97,7 @@ public class Grid
 
     public int GetMaxX()
     {
-        return Mathf.RoundToInt(Columns-1);
+        return Mathf.RoundToInt(Columns);
     }
     public int GetMaxY()
     {

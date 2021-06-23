@@ -25,7 +25,8 @@ public class CentipedeController : MonoBehaviour,Centipede
         float elapsedtime = 0;
         originPos = transform.position;
         targetPos = originPos + direction;
-        Debug.Log("Target Pos: " + targetPos);
+        //Debug.Log("Target Pos: " + targetPos);
+        #region max-min grid control
         int x;
         int y;
         Grid.Instance().GetGridXY(targetPos, out x, out y);
@@ -33,27 +34,61 @@ public class CentipedeController : MonoBehaviour,Centipede
         {
             targetPos = new Vector3(targetPos.x, originPos.y);
         }
-        if (x > Grid.Instance().GetCanWalkHorizontal() || x < 0)
-        {
-            if (y <= 0)
+
+        RaycastHit2D hit = Physics2D.Raycast(targetPos, Vector3.zero);
+        if (hit.collider != null) {
+            if (x > Grid.Instance().GetCanWalkHorizontal() || x < 0 || hit.collider.CompareTag("Mushroom"))
             {
-                directionUpDown = -1;
-            }
-            else if(y >= Grid.Instance().GetMaxY())
-            {
-                directionUpDown = 1;
-            }
-            targetPos += Vector3.down * directionUpDown;
-            targetPos = new Vector3(originPos.x, targetPos.y);
-            if (directionLookAt == 1)
-            {
-                directionLookAt = -1;
-            }
-            else
-            {
-                directionLookAt = 1;
+                if (y <= 0)
+                {
+                    directionUpDown = -1;
+                }
+                else if (y >= Grid.Instance().GetMaxY())
+                {
+                    directionUpDown = 1;
+                }
+                targetPos += Vector3.down * directionUpDown;
+                targetPos = new Vector3(originPos.x, targetPos.y);
+                if (directionLookAt == 1)
+                {
+                    directionLookAt = -1;
+                }
+                else
+                {
+                    directionLookAt = 1;
+                }
             }
         }
+        else
+        {
+            if (x > Grid.Instance().GetCanWalkHorizontal() || x < 0)
+            {
+                if (y <= 0)
+                {
+                    directionUpDown = -1;
+                }
+                else if (y >= Grid.Instance().GetMaxY())
+                {
+                    directionUpDown = 1;
+                }
+                targetPos += Vector3.down * directionUpDown;
+                targetPos = new Vector3(originPos.x, targetPos.y);
+                if (directionLookAt == 1)
+                {
+                    directionLookAt = -1;
+                }
+                else
+                {
+                    directionLookAt = 1;
+                }
+            }
+        }
+       
+        #endregion
+        Vector3 lookAtTarget = targetPos - transform.position;
+        float angle = Mathf.Atan2(lookAtTarget.y, lookAtTarget.x) * Mathf.Rad2Deg;
+        Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.rotation = Quaternion.Slerp(transform.rotation, q,1f);
         while (elapsedtime < timeToMove)
         {
             transform.position = Vector3.Lerp(originPos, targetPos, elapsedtime / timeToMove);
@@ -63,6 +98,11 @@ public class CentipedeController : MonoBehaviour,Centipede
         transform.position = targetPos;
 
         isMoving = false;
+    }
+
+    public void SetDirectionCentipede(int direction)
+    {
+        directionLookAt = direction;
     }
 
 }

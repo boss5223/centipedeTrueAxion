@@ -15,28 +15,77 @@ public class GameManager : MonoBehaviour
 
     [Header("Monster")]
     public GameObject _centipede;
+    [Range(15, 40)] public int centipedeParts;
+
+    [Header("Mushroom")]
+    public GameObject _mushroom;
 
     private IEnumerator Start()
     {
         Grid.Instance().SetSprite(sprite);
         Grid.Instance().SetParent(gridParent);
         Grid.Instance().CreateGrid();
-       
-
         while (!Grid.Instance().GetGridCreatedIsDone())
         {
             yield return null;
         }
-        //Create Player;
+        CreatePlayer();
+        yield return new WaitForSeconds(1f);
+        CreateCentipede(centipedeParts);
+        CreateMushroom();
+    }
+
+    void CreatePlayer()
+    {
         Vector3 position = Vector3.zero;
-        Grid.Instance().GetPositionGrid(Grid.Instance().GetCenterX(), 0,out position);
+        Grid.Instance().GetPositionGrid(Grid.Instance().GetCenterX(), 0, out position);
         Debug.Log(Grid.Instance().GetCenterX());
         Debug.Log(position);
         var player = Instantiate(_player, position, Quaternion.identity);
+    }
 
-        yield return new WaitForSeconds(1f);
-        Vector3 centipedePosition = Vector3.zero;
-        Grid.Instance().GetPositionGrid(0, Grid.Instance().GetMaxY(), out centipedePosition);
-        var centipede = Instantiate(_centipede, centipedePosition, Quaternion.identity);
+    void CreateCentipede(int amountCentipede)
+    {
+        bool _hasHead = false;
+        if (amountCentipede > Grid.Instance().GetMaxX())
+        {
+            var remain = amountCentipede - Grid.Instance().GetMaxX();
+            remain = Grid.Instance().GetMaxX() - remain;
+            for (int i = remain; i < Grid.Instance().GetMaxX(); i++)
+            {
+
+                Vector3 centipedePosition = Vector3.zero;
+                Grid.Instance().GetPositionGrid(i, Grid.Instance().GetMaxY() - 1, out centipedePosition);
+                var centipede = Instantiate(_centipede, centipedePosition, Quaternion.identity);
+                centipede.GetComponent<CentipedeController>().SetDirectionCentipede(-1);
+                if (i == remain && !_hasHead)
+                {
+                    centipede.transform.Find("Head").gameObject.SetActive(true);
+                    _hasHead = true;
+                }
+            }
+
+            amountCentipede = Grid.Instance().GetMaxX();
+        }
+        for (int i = amountCentipede; i > 0; i--)
+        {
+            Vector3 centipedePosition = Vector3.zero;
+            Grid.Instance().GetPositionGrid(i, Grid.Instance().GetMaxY(), out centipedePosition);
+            var centipede = Instantiate(_centipede, centipedePosition, Quaternion.identity);
+            if (i == amountCentipede && !_hasHead)
+            {
+                centipede.transform.Find("Head").gameObject.SetActive(true);
+                _hasHead = true;
+            }
+
+        }
+
+    }
+
+    void CreateMushroom()
+    {
+        Vector3 position = Vector3.zero;
+        Grid.Instance().GetPositionGrid(Grid.Instance().GetCenterX(), Grid.Instance().GetMaxY()-2, out position);
+        var player = Instantiate(_mushroom, position, Quaternion.identity);
     }
 }

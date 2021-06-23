@@ -283,3 +283,6 @@ MonoBehaviour:
   _player: {fileID: 8969893677740900876, guid: df14239cd1cbbc040a62bea8201cdcf4, type: 3}
   _centipede: {fileID: 2037659240428300930, guid: a10670d97fe0ca74485b0707cdaee9ee,
     type: 3}
+  centipedeParts: 18
+  _mushroom: {fileID: 883302781857468044, guid: 11e0235934593d24b8dc1b1c35dad4d7,
+    type: 3}
