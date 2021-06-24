@@ -140,7 +140,7 @@ public class GameManager : MonoBehaviour
 
     public int CheckCentipedeRemain()
     {
-        return _centipedeParent.childCount;
+        return _centipedeParent.childCount-1;
     }
 
     public void GameOverState()
