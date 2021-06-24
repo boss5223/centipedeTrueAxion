@@ -128,6 +128,31 @@ public class PlayerController : MonoBehaviour, Player
         isFired = false;
     }
 
+    public IEnumerator Dead()
+    {
+        //Animation กระพริบๆ
+        PlayerAttribute.Instance.DecreaseHealth();
+        yield return new WaitForSeconds(1.5f);
+        GameManager.Instance.RespawnManager();
+        Destroy(this.gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision != null)
+        {
+            if (collision.CompareTag("Centipede"))
+            {
+                if (!GameManager.Instance._deadState)
+                {
+                    Debug.Log("Attake Player!!!!");
+                    GameManager.Instance._deadState = true;
+                    StartCoroutine(Dead());
+                }
+            }
+        }
+    }
+
 
 
 }

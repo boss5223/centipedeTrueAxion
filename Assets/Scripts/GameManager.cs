@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Player")]
     public GameObject _player;
+    public bool _deadState = false;
 
     [Header("Monster")]
     public GameObject _centipede;
@@ -22,21 +23,19 @@ public class GameManager : MonoBehaviour
 
     [Header("Mushroom")]
     public GameObject _mushroom;
-    [Range(15,40)]public int amountMushroom;
+    [Range(15, 40)] public int amountMushroom;
     public Transform _mushroomParent;
 
-    public event System.Action<int> onFireCentipede;
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
     }
     private IEnumerator Start()
     {
-        onFireCentipede += CentipedeKilled;
         Grid.Instance().SetSprite(sprite);
         Grid.Instance().SetParent(gridParent);
         Grid.Instance().CreateGrid();
@@ -75,8 +74,6 @@ public class GameManager : MonoBehaviour
                 var centipede = Instantiate(_centipede, centipedePosition, Quaternion.identity);
                 centipede.transform.SetParent(_centipedeParent);
                 centipede.GetComponent<CentipedeController>().SetDirectionCentipede(-1);
-                centipede.GetComponent<CentipedeController>().indexCentipede = indexCentipede;
-                indexCentipede += 1;
                 if (i == remain && !_hasHead)
                 {
                     centipede.transform.Find("Head").gameObject.SetActive(true);
@@ -92,8 +89,6 @@ public class GameManager : MonoBehaviour
             Grid.Instance().GetPositionGrid(i, Grid.Instance().GetMaxY(), out centipedePosition);
             var centipede = Instantiate(_centipede, centipedePosition, Quaternion.identity);
             centipede.transform.SetParent(_centipedeParent);
-            centipede.GetComponent<CentipedeController>().indexCentipede = indexCentipede;
-            indexCentipede += 1;
             if (i == amountCentipede && !_hasHead)
             {
                 centipede.transform.Find("Head").gameObject.SetActive(true);
@@ -117,7 +112,7 @@ public class GameManager : MonoBehaviour
                 mushroom.transform.SetParent(_mushroomParent);
             }
         }
-        
+
     }
 
     void SpawnMushroom(Vector3 position)
@@ -125,25 +120,34 @@ public class GameManager : MonoBehaviour
         var mushroom = Instantiate(_mushroom, position, Quaternion.identity);
     }
 
-    public void SetEventOnFireCentipede(int index)
+    IEnumerator Respawn()
     {
-        onFireCentipede(index);
+        foreach (Transform item in _centipedeParent)
+        {
+            Destroy(item.gameObject);
+        }
+        CreatePlayer();
+        yield return new WaitForSeconds(1f);
+        _deadState = false;
+        CreateCentipede(centipedeParts);
     }
 
-    void CentipedeKilled(int index)
+    public void RespawnManager()
     {
-        //var centipede = GameObject.FindGameObjectsWithTag("Centipede");
-        //for(int i =0;i < centipede.Length; i++)
-        //{
-        //    var controller = centipede[i].GetComponent<CentipedeController>();
-        //    if (controller.indexCentipede < index)
-        //    {
-        //        controller.SetDirectionCentipede(-1);
-        //    }
-        //    else 
-        //    {
-        //        controller.SetDirectionCentipede(1);
-        //    }
-        //}
+        StartCoroutine(Respawn());
     }
+
+    public int CheckCentipedeRemain()
+    {
+        return _centipedeParent.childCount;
+    }
+
+    public void GameOverState()
+    {
+        Debug.Log("GameOver!!");
+    }
+
+
+
+
 }

@@ -97,14 +97,21 @@ public class CentipedeController : MonoBehaviour,Centipede
         }
         transform.position = targetPos;
         // Attack Player
-        RaycastHit2D playerHit = Physics2D.Raycast(transform.position, Vector3.zero);
-        if(playerHit.collider != null)
-        {
-            if (playerHit.collider.CompareTag("Player"))
-            {
-                Debug.Log("Attake Player!!!!");
-            }
-        }
+        //RaycastHit2D playerHit = Physics2D.Raycast(transform.position, Vector3.zero);
+        //if(playerHit.collider != null)
+        //{
+        //    if (playerHit.collider.CompareTag("Player"))
+        //    {
+               
+        //        if (!GameManager.Instance._deadState)
+        //        {
+        //            Debug.Log("Attake Player!!!!");
+        //            GameManager.Instance._deadState = true;
+        //            StartCoroutine(playerHit.collider.GetComponent<PlayerController>().Dead());
+        //        }
+               
+        //    }
+        //}
         isMoving = false;
     }
 
@@ -168,4 +175,23 @@ public class CentipedeController : MonoBehaviour,Centipede
         Debug.Log("Split Centipede Success!!");
     }
 
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    Debug.Log("Trigger!");
+    //    if (collision != null)
+    //    {
+    //        if (collision.CompareTag("Player"))
+    //        {
+
+    //            if (!GameManager.Instance._deadState)
+    //            {
+    //                Debug.Log("Attake Player!!!!");
+    //                GameManager.Instance._deadState = true;
+    //                StartCoroutine(collision.GetComponent<PlayerController>().Dead());
+    //            }
+
+    //        }
+    //    }
+    //}
 }

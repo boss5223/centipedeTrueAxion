@@ -38,15 +38,25 @@ public class Bullet : MonoBehaviour
                 var centipede = hit.collider.GetComponent<CentipedeController>();
                 if (centipede != null) 
                 {
-                    //GameManager.Instance.SetEventOnFireCentipede(centipede.indexCentipede);
                     centipede.SetOtherCentipedeDirection();
                     Destroy(hit.collider.gameObject);
+                    Destroy(gameObject);
+                    if(GameManager.Instance.CheckCentipedeRemain() <= 0)
+                    {
+                        GameManager.Instance.GameOverState();
+                    }
                 }
               
             }
             else if (hit.collider.CompareTag("Mushroom"))
             {
                 Debug.Log("Fire Mushroom!");
+                var mushroom = hit.collider.GetComponent<Mushroom>();
+                if(mushroom != null)
+                {
+                    mushroom.DecreaseHealthMushroom();
+                    Destroy(gameObject);
+                }
             }
         }
         if(y > Grid.Instance().GetMaxY())

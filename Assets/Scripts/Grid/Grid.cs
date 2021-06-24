@@ -35,7 +35,7 @@ public class Grid
         Debug.Log(Horizontal);
 
         Columns = Horizontal * 2f;
-        Rows = Vertical * 2f;
+        Rows = (Vertical * 2f) -2f;
         Grids = new float[(int)Columns, (int)Rows];
         for (int i = 0; i < Columns; i++)
         {

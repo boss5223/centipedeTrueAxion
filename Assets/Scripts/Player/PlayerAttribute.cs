@@ -14,12 +14,15 @@ public class PlayerAttribute : MonoBehaviour
             Instance = this;
         }
     }
+
     public void DecreaseHealth()
     {
         health -= 1;
+        UIManager.Instance.lifes.text = "Life: "+ health.ToString();
         if(health <= 0)
         {
-            //GameOver
+            UIManager.Instance.lifes.text = "Life: " + 0;
+            GameManager.Instance.GameOverState();
         }
     }
 }
