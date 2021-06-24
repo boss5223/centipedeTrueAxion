@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class CentipedeController : MonoBehaviour,Centipede
 {
-
-
-
+    public int indexCentipede { get; set; }
     private bool isMoving;
     private Vector3 originPos, targetPos;
     [Range(0.1f, 9.9f)] public float timeToMove = 0.1f;
@@ -113,6 +111,61 @@ public class CentipedeController : MonoBehaviour,Centipede
     public void SetDirectionCentipede(int direction)
     {
         directionLookAt = direction;
+    }
+
+    public void SetOtherCentipedeDirection()
+    {
+        int[] dir =  new int[2]{1,-1};
+        bool centipedeNull = false;
+        while (!centipedeNull) // Right Centipede
+        {
+            var direction = Vector3.right * dir[0];
+            var targetPos = transform.position + direction;
+            RaycastHit2D hit = Physics2D.Raycast(targetPos, Vector3.zero);
+            if(hit.collider != null)
+            {
+                if (hit.collider.CompareTag("Centipede"))
+                {
+                    hit.collider.GetComponent<CentipedeController>().SetDirectionCentipede(1);
+                }
+                else
+                {
+                    centipedeNull = true;
+                }
+            }
+            else
+            {
+                centipedeNull = true;
+            }
+
+            dir[0] += 1;
+        }
+
+        centipedeNull = false;
+        while (!centipedeNull) // Left Centipede
+        {
+            var direction = Vector3.right * dir[1];
+            var targetPos = transform.position + direction;
+            RaycastHit2D hit = Physics2D.Raycast(targetPos, Vector3.zero);
+            if (hit.collider != null)
+            {
+                if (hit.collider.CompareTag("Centipede"))
+                {
+                    hit.collider.GetComponent<CentipedeController>().SetDirectionCentipede(-1);
+                }
+                else
+                {
+                    centipedeNull = true;
+                }
+            }
+            else
+            {
+                centipedeNull = true;
+            }
+
+            dir[1] -= 1;
+        }
+        Debug.Log("Split Centipede Success!!");
     }
 
 }

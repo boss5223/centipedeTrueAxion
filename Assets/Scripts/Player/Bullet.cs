@@ -35,6 +35,14 @@ public class Bullet : MonoBehaviour
             if (hit.collider.CompareTag("Centipede"))
             {
                 Debug.Log("Fire Centipede!!");
+                var centipede = hit.collider.GetComponent<CentipedeController>();
+                if (centipede != null) 
+                {
+                    //GameManager.Instance.SetEventOnFireCentipede(centipede.indexCentipede);
+                    centipede.SetOtherCentipedeDirection();
+                    Destroy(hit.collider.gameObject);
+                }
+              
             }
             else if (hit.collider.CompareTag("Mushroom"))
             {

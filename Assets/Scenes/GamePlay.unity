@@ -274,6 +274,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1010920029}
   - component: {fileID: 1010920030}
+  - component: {fileID: 1010920031}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -319,6 +320,19 @@ MonoBehaviour:
     type: 3}
   amountMushroom: 23
   _mushroomParent: {fileID: 505643296}
+--- !u!114 &1010920031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010920028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f00e8b0717a51a6449e7b6510c719a88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
 --- !u!1 &1941387570
 GameObject:
   m_ObjectHideFlags: 0
