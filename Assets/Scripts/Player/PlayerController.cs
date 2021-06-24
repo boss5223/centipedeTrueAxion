@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour, Player
 {
     private bool isMoving;
     private Vector3 originPos, targetPos;
-    private float timeToMove = 0.1f;
+    [Range(0.1f,10f)]public float timeToMove = 0.1f;
     private Vector3 directions;
     private bool mushroomFounded;
     private GameObject bullet;

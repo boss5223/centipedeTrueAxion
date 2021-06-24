@@ -267,7 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifes: {fileID: 583398095}
   score: {fileID: 1461304500}
-  gameOverPanel: {fileID: 0}
+  gameOverPanel: {fileID: 464292265}
 --- !u!1 &405206240
 GameObject:
   m_ObjectHideFlags: 0
