@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
     public Text lifes;
     public Text score;
 
+    public Transform gameOverPanel;
+
     private void Awake()
     {
         if(Instance == null)

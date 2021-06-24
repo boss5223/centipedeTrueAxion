@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public Transform _mushroomParent;
 
 
+
     private void Awake()
     {
         if (Instance == null)
@@ -145,6 +146,7 @@ public class GameManager : MonoBehaviour
     public void GameOverState()
     {
         Debug.Log("GameOver!!");
+        UIManager.Instance.gameOverPanel.gameObject.SetActive(true);
     }
 
 
